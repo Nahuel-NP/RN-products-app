@@ -13,7 +13,7 @@ import { useColorScheme } from "../presentation/theme/hooks/useColorScheme";
 export default function RootLayout() {
   const colorScheme = useColorScheme();
   const [loaded] = useFonts({
-    SpaceMono: require("../assets/fonts/SpaceMono-Regular.ttf"),
+    // SpaceMono: require("../assets/fonts/SpaceMono-Regular.ttf"),
     KanitRegular: require("../assets/fonts/Kanit-Regular.ttf"),
     KanitThin: require("../assets/fonts/Kanit-Thin.ttf"),
     KanitBold: require("../assets/fonts/Kanit-Bold.ttf"),
