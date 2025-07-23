@@ -12,23 +12,26 @@ export interface AuthState {
   login: (email: string, password: string) => Promise<boolean>;
   logout: () => Promise<void>;
   checkStatus: () => Promise<void>;
+  changeStatus: (token?: string, user?: User) => boolean;
 }
 
-export const useAuthStore = create<AuthState>()((set) => ({
+export const useAuthStore = create<AuthState>()((set, get) => ({
   status: "checking",
   token: undefined,
   user: undefined,
-  login: async (email: string, password: string) => {
-    const response = await authLogin(email, password);
-    if (!response) {
-      set({ status: "unauthenticated" });
+
+  changeStatus: (token?: string, user?: User) => {
+    if (!token || !user) {
+      set({ status: "unauthenticated", token: undefined, user: undefined });
+      //TODO: call logout
       return false;
     }
-    const { token, user } = response;
     set({ status: "authenticated", token, user });
-
-    //TODO: guardar token en secure storage
     return true;
+  },
+  login: async (email: string, password: string) => {
+    const response = await authLogin(email, password);
+    return get().changeStatus(response?.token, response?.user);
   },
   logout: async () => {
     //TODO: borrar token de secure storage
@@ -37,12 +40,6 @@ export const useAuthStore = create<AuthState>()((set) => ({
   },
   checkStatus: async () => {
     const resp = await checkAuthStatus();
-    if (!resp) {
-      set({ status: "unauthenticated" });
-      return;
-    }
-    const { token, user } = resp;
-    set({ status: "authenticated", token, user });
-    return;
+    get().changeStatus(resp?.token, resp?.user);
   },
 }));
