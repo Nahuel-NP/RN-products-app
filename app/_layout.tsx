@@ -14,6 +14,9 @@ export default function RootLayout() {
   const colorScheme = useColorScheme();
   const [loaded] = useFonts({
     SpaceMono: require("../assets/fonts/SpaceMono-Regular.ttf"),
+    KanitRegular: require("../assets/fonts/Kanit-Regular.ttf"),
+    KanitThin: require("../assets/fonts/Kanit-Thin.ttf"),
+    KanitBold: require("../assets/fonts/Kanit-Bold.ttf"),
   });
 
   if (!loaded) {
@@ -23,7 +26,7 @@ export default function RootLayout() {
 
   return (
     <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
-      <Stack>
+      <Stack screenOptions={{ headerShown: false }}>
         <Stack.Screen
           name="(products-app)/(home)/index"
           options={{ headerShown: false }}
