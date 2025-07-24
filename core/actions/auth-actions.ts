@@ -52,4 +52,18 @@ export const checkAuthStatus = async () => {
   }
 };
 
-//TODO: register
+export const authRegister = async (fullName: string, email: string, password: string) => {
+  const emailLower = email.toLowerCase();
+ try {
+    const { data } = await productsApi.post<AuthResponse>("/auth/register", {
+      fullName,
+      email: emailLower,
+      password,
+    });
+    return returnUserToken(data);
+  } catch (error) {
+    console.log("🚀 ~ authLogin ~ error:", error)
+    // throw new Error("Error al iniciar sesión");
+    return null;
+  }
+};
