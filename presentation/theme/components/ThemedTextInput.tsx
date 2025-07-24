@@ -5,37 +5,64 @@ import { useThemeColor } from "../hooks/useThemeColor";
 
 interface Props extends TextInputProps {
   icon?: keyof typeof Ionicons.glyphMap;
+  hasError?: boolean;
+  showPassword?: boolean;
 }
-const ThemedTextInput = ({ icon, ...rest }: Props) => {
+const ThemedTextInput = ({
+  icon,
+  hasError,
+  secureTextEntry = false,
+  ...rest
+}: Props) => {
   const primaryColor = useThemeColor({}, "primary");
   const textColor = useThemeColor({}, "text");
 
+  const [showPassword, setShowPassword] = useState(false);
   const [isFocused, setIsFocused] = useState(false);
   const inputRef = useRef<TextInput>(null);
   return (
     <View
       style={{
         ...styles.border,
-        borderColor: isFocused ? primaryColor : "#bbb",
+        borderColor: hasError ? "red" : isFocused ? primaryColor : "#bbb",
       }}
-      onTouchStart={() => inputRef.current?.focus()}
     >
-      {icon && (
+      <View
+        style={{
+          flex: 1,
+          justifyContent: "center",
+          flexDirection: "row",
+          alignItems: "center",
+        }}
+        onTouchStart={() => inputRef.current?.focus()}
+      >
+        {icon && (
+          <Ionicons
+            name={icon}
+            size={24}
+            color={textColor}
+            style={{ marginRight: 6 }}
+          />
+        )}
+        <TextInput
+          placeholderTextColor="#bbb"
+          {...rest}
+          ref={inputRef}
+          onFocus={() => setIsFocused(true)}
+          onBlur={() => setIsFocused(false)}
+          style={{ color: textColor, flex: 1 }}
+          secureTextEntry={secureTextEntry && !showPassword}
+        />
+      </View>
+      {secureTextEntry && (
         <Ionicons
-          name={icon}
+          onPress={() => setShowPassword(!showPassword)}
+          name={showPassword ? "eye-off-outline" : "eye-outline"}
           size={24}
           color={textColor}
-          style={{ marginRight: 6 }}
+          style={{ marginLeft: 6 }}
         />
       )}
-      <TextInput
-        placeholderTextColor="#bbb"
-        {...rest}
-        ref={inputRef}
-        onFocus={() => setIsFocused(true)}
-        onBlur={() => setIsFocused(false)}
-        style={{ color: textColor, flex: 1 }}
-      />
     </View>
   );
 };
