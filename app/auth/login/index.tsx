@@ -20,7 +20,7 @@ const LoginScreen = () => {
       >
         <View style={{}}>
           <ThemedText type="title">Ingresar</ThemedText>
-          <ThemedText style={{ color: "gray" }} type="subtitle">
+          <ThemedText style={{ color: "#bbb" }} type="subtitle">
             Por favor ingrese para continuar
           </ThemedText>
           <View style={{ marginVertical: 20, gap: 10 }}>
@@ -50,7 +50,7 @@ const LoginScreen = () => {
             <ThemedText style={{ color: "white",fontSize: 18 }} type="default">
               ¿No tienes cuenta?
             </ThemedText>
-            <ThemedLink href="/auth/register" style={{ fontSize: 18 }}>Crear cuenta</ThemedLink>
+            <ThemedLink push href="/auth/register" style={{ fontSize: 18 }}>Crear cuenta</ThemedLink>
           </View>
         </View>
       </ScrollView>
