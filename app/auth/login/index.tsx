@@ -1,3 +1,5 @@
+import ThemedButton from "@/presentation/theme/components/ThemedButton";
+import ThemedLink from "@/presentation/theme/components/ThemedLink";
 import { ThemedText } from "@/presentation/theme/components/ThemedText";
 import ThemedTextInput from "@/presentation/theme/components/ThemedTextInput";
 import { useThemeColor } from "@/presentation/theme/hooks/useThemeColor";
@@ -35,6 +37,20 @@ const LoginScreen = () => {
               secureTextEntry
               icon="lock-closed-outline"
             />
+          </View>
+          <ThemedButton
+            postPendIcon="arrow-forward-outline"
+            onPress={() => {
+              console.log("Ingresar");
+            }}
+          >
+            Ingresar
+          </ThemedButton>
+          <View style={{ marginTop: 20, flexDirection: "row", alignItems: "center", gap: 10, justifyContent: "center" }}>
+            <ThemedText style={{ color: "white",fontSize: 18 }} type="default">
+              ¿No tienes cuenta?
+            </ThemedText>
+            <ThemedLink href="/auth/register" style={{ fontSize: 18 }}>Crear cuenta</ThemedLink>
           </View>
         </View>
       </ScrollView>
