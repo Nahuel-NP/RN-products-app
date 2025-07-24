@@ -16,7 +16,7 @@ const ThemedTextInput = ({ icon, ...rest }: Props) => {
     <View
       style={{
         ...styles.border,
-        borderColor: isFocused ? primaryColor : "gray",
+        borderColor: isFocused ? primaryColor : "#bbb",
       }}
       onTouchStart={() => inputRef.current?.focus()}
     >
@@ -29,7 +29,7 @@ const ThemedTextInput = ({ icon, ...rest }: Props) => {
         />
       )}
       <TextInput
-        placeholderTextColor="#5c5c5c"
+        placeholderTextColor="#bbb"
         {...rest}
         ref={inputRef}
         onFocus={() => setIsFocused(true)}
@@ -44,10 +44,10 @@ export default ThemedTextInput;
 
 const styles = StyleSheet.create({
   border: {
-    borderWidth: 1,
+    borderWidth: 2,
     borderRadius: 10,
-    paddingHorizontal: 6,
-    paddingVertical: 4,
+    paddingHorizontal: 8,
+    paddingVertical: 6,
     flexDirection: "row",
     alignItems: "center",
   },
