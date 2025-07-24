@@ -24,7 +24,7 @@ export const useAuthStore = create<AuthState>()((set, get) => ({
   changeStatus: async (token?: string, user?: User) => {
     if (!token || !user) {
       set({ status: "unauthenticated", token: undefined, user: undefined });
-      //TODO: call logout
+      await get().logout();
       return false;
     }
     set({ status: "authenticated", token, user });
