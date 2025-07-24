@@ -12,6 +12,7 @@ const ThemedButton = ({
   prePendIcon,
   postPendIcon,
   children,
+  disabled,
   ...rest
 }: Props) => {
   const primary = useThemeColor({}, "primary");
@@ -19,6 +20,7 @@ const ThemedButton = ({
   return (
     <Pressable
       {...rest}
+      disabled={disabled}
       style={({ pressed }) => ({
         flexDirection: "row",
         alignItems: "center",
@@ -27,7 +29,7 @@ const ThemedButton = ({
         paddingHorizontal: 20,
         borderRadius: 10,
         gap: 6,
-        backgroundColor: primary,
+        backgroundColor: disabled ? "gray" : primary,
         opacity: pressed ? 0.8 : 1,
       })}
     >
