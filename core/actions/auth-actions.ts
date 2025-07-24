@@ -27,9 +27,7 @@ const returnUserToken = (data: AuthResponse): { user: User; token: string } => {
 
 export const authLogin = async (email: string, password: string) => {
   const emailLower = email.toLowerCase();
-  console.log("🚀 ~ authLogin ~ emailLower:", emailLower)
-  console.log("🚀 ~ authLogin ~ password:", password)
-  try {
+ try {
     const { data } = await productsApi.post<AuthResponse>("/auth/login", {
       email: emailLower,
       password,
