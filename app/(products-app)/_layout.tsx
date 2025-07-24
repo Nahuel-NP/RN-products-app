@@ -1,8 +1,9 @@
+import LogoutIconButton from "@/presentation/auth/components/LogoutIconButton";
 import { useAuthStore } from "@/presentation/auth/store/useAuthStore";
 import { useThemeColor } from "@/presentation/theme/hooks/useThemeColor";
 import { Redirect, Stack } from "expo-router";
 import { useEffect } from "react";
-import { ActivityIndicator, View } from "react-native";
+import { ActivityIndicator, SafeAreaView, View } from "react-native";
 
 const CheckAuthenticationLayout = () => {
   const { status, checkStatus } = useAuthStore();
@@ -30,19 +31,23 @@ const CheckAuthenticationLayout = () => {
     return <Redirect href="/auth/login" />;
   }
   return (
-    <Stack
-      screenOptions={{
-        headerShadowVisible: false,
-        headerStyle: { backgroundColor },
-        contentStyle:{backgroundColor}
-      }}
-      
-    >
-      <Stack.Screen
-        name="(home)/index"
-        options={{ headerShown: false, title: "Home" }}
-      />
-    </Stack>
+    <SafeAreaView style={{ flex: 1 }}>
+      <Stack
+        screenOptions={{
+          headerShadowVisible: false,
+          headerStyle: { backgroundColor },
+          contentStyle: { backgroundColor },
+        }}
+      >
+        <Stack.Screen
+          name="(home)/index"
+          options={{
+            title: "Products",
+            headerLeft: () => <LogoutIconButton />,
+          }}
+        />
+      </Stack>
+    </SafeAreaView>
   );
 };
 
