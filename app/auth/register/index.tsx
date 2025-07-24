@@ -1,47 +1,26 @@
+import CustomKeyboardAvoidingView from "@/presentation/shared/CustomKeyboardAvoidVIew";
 import ThemedButton from "@/presentation/theme/components/ThemedButton";
 import ThemedLink from "@/presentation/theme/components/ThemedLink";
 import { ThemedText } from "@/presentation/theme/components/ThemedText";
 import ThemedTextInput from "@/presentation/theme/components/ThemedTextInput";
 import { useThemeColor } from "@/presentation/theme/hooks/useThemeColor";
-import { useEffect, useState } from "react";
 import {
-  Keyboard,
-  KeyboardAvoidingView,
-  Platform,
   ScrollView,
-  View,
+  View
 } from "react-native";
 
 const RegisterScreen = () => {
   const backgroundColor = useThemeColor({}, "background");
 
-  const [keyboardVisible, setKeyboardVisible] = useState(false);
 
-  useEffect(() => {
-    const showSub = Keyboard.addListener("keyboardDidShow", () =>
-      setKeyboardVisible(true)
-    );
-    const hideSub = Keyboard.addListener("keyboardDidHide", () =>
-      setKeyboardVisible(false)
-    );
-
-    return () => {
-      showSub.remove();
-      hideSub.remove();
-    };
-  }, []);
   return (
-    <KeyboardAvoidingView
-      enabled={keyboardVisible}
-      style={{ flex: 1, backgroundColor: "blue" }}
-      behavior={Platform.OS === "ios" ? "padding" : "height"}
+    <CustomKeyboardAvoidingView
     >
       <ScrollView
         style={{ backgroundColor }}
         contentContainerStyle={{
           justifyContent: "center",
           flex: 1,
-          // backgroundColor:'red',
           paddingHorizontal: 20,
         }}
       >
@@ -104,7 +83,7 @@ const RegisterScreen = () => {
           </View>
         </View>
       </ScrollView>
-    </KeyboardAvoidingView>
+    </CustomKeyboardAvoidingView>
   );
 };
 

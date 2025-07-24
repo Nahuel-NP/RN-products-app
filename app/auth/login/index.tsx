@@ -1,4 +1,5 @@
 import { useAuthStore } from "@/presentation/auth/store/useAuthStore";
+import CustomKeyboardAvoidingView from "@/presentation/shared/CustomKeyboardAvoidVIew";
 import ThemedButton from "@/presentation/theme/components/ThemedButton";
 import ThemedLink from "@/presentation/theme/components/ThemedLink";
 import { ThemedText } from "@/presentation/theme/components/ThemedText";
@@ -6,7 +7,11 @@ import ThemedTextInput from "@/presentation/theme/components/ThemedTextInput";
 import { useThemeColor } from "@/presentation/theme/hooks/useThemeColor";
 import { router } from "expo-router";
 import { useState } from "react";
-import { Alert, KeyboardAvoidingView, Platform, ScrollView, View } from "react-native";
+import {
+  Alert,
+  ScrollView,
+  View
+} from "react-native";
 
 const LoginScreen = () => {
   const backgroundColor = useThemeColor({}, "background");
@@ -35,10 +40,7 @@ const LoginScreen = () => {
   };
 
   return (
-    <KeyboardAvoidingView
-      style={{ flex: 1, flexGrow: 1 }}
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-    >
+    <CustomKeyboardAvoidingView>
       <ScrollView
         keyboardShouldPersistTaps="handled"
         style={{ backgroundColor }}
@@ -99,7 +101,7 @@ const LoginScreen = () => {
           </View>
         </View>
       </ScrollView>
-    </KeyboardAvoidingView>
+    </CustomKeyboardAvoidingView>
   );
 };
 
