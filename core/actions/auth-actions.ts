@@ -27,14 +27,17 @@ const returnUserToken = (data: AuthResponse): { user: User; token: string } => {
 
 export const authLogin = async (email: string, password: string) => {
   const emailLower = email.toLowerCase();
+  console.log("🚀 ~ authLogin ~ emailLower:", emailLower)
+  console.log("🚀 ~ authLogin ~ password:", password)
   try {
     const { data } = await productsApi.post<AuthResponse>("/auth/login", {
-      emailLower,
+      email: emailLower,
       password,
     });
     return returnUserToken(data);
   } catch (error) {
-    console.log(error);
+    console.log("🚀 ~ authLogin ~ error:", error)
+    
     // throw new Error("Error al iniciar sesión");
     return null;
   }
