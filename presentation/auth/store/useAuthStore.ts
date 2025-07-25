@@ -1,4 +1,4 @@
-import { authLogin, authRegister, checkAuthStatus } from "@/core/actions/auth-actions";
+import { authLogin, authRegister, checkAuthStatus } from "@/core/auth/actions/auth-actions";
 import { User } from "@/core/auth/interface/user";
 import { SecureStorageAdapter } from "@/helpers/adapters/secure-storage.adapter";
 import { create } from "zustand";
