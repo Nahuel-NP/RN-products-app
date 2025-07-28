@@ -1,3 +1,4 @@
+import ProductImages from "@/presentation/products/components/ProductImages";
 import { useProduct } from "@/presentation/products/hooks/useProduct";
 import CustomKeyboardAvoidingView from "@/presentation/shared/CustomKeyboardAvoidVIew";
 import { ThemedText } from "@/presentation/theme/components/ThemedText";
@@ -54,6 +55,7 @@ const ProductScreen = () => {
   return (
     <CustomKeyboardAvoidingView>
       <ScrollView>
+        <ProductImages images={productQuery.data.images} />
         <ThemedView
           style={{ paddingHorizontal: 20, flexDirection: "column", gap: 10 }}
         >
