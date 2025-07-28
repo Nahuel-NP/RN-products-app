@@ -1,7 +1,7 @@
 import { Product } from "@/core/products/interface/product.interface";
 import { useQueryClient } from "@tanstack/react-query";
 import React, { useState } from "react";
-import { FlatList, RefreshControl } from "react-native";
+import { FlatList, RefreshControl, View } from "react-native";
 import { ProductCard } from "./ProductCard";
 
 interface Props {
@@ -31,6 +31,7 @@ const ProductsList = ({ products, loadNextPage }: Props) => {
       refreshControl={
         <RefreshControl refreshing={isRefreshing} onRefresh={onPullToRefresh} />
       }
+      ListFooterComponent={<View style={{ height: 40 }} />}
     />
   );
 };

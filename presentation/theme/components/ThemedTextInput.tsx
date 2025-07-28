@@ -1,6 +1,12 @@
 import { Ionicons } from "@expo/vector-icons";
 import { useRef, useState } from "react";
-import { StyleSheet, TextInput, TextInputProps, View } from "react-native";
+import {
+  StyleSheet,
+  TextInput,
+  TextInputProps,
+  View,
+  ViewStyle,
+} from "react-native";
 import { useThemeColor } from "../hooks/useThemeColor";
 
 interface Props extends TextInputProps {
@@ -12,6 +18,7 @@ const ThemedTextInput = ({
   icon,
   hasError,
   secureTextEntry = false,
+  style,
   ...rest
 }: Props) => {
   const primaryColor = useThemeColor({}, "primary");
@@ -22,10 +29,13 @@ const ThemedTextInput = ({
   const inputRef = useRef<TextInput>(null);
   return (
     <View
-      style={{
-        ...styles.border,
-        borderColor: hasError ? "red" : isFocused ? primaryColor : "#bbb",
-      }}
+      style={[
+        {
+          ...styles.border,
+          borderColor: hasError ? "red" : isFocused ? primaryColor : "#bbb",
+        },
+        style as ViewStyle,
+      ]}
     >
       <View
         style={{
