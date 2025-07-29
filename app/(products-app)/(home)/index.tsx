@@ -1,6 +1,8 @@
 import ProductsList from "@/presentation/products/components/ProductsList";
 import { useProducts } from "@/presentation/products/hooks/useProducts";
+import { FAB } from "@/presentation/shared/FAB";
 import { useThemeColor } from "@/presentation/theme/hooks/useThemeColor";
+import { router } from "expo-router";
 import React from "react";
 import { ActivityIndicator, Text, View } from "react-native";
 
@@ -27,10 +29,12 @@ const HomeScreen = () => {
   return (
     <View style={{ paddingHorizontal: 20 }}>
       <ProductsList
-        products={
-          productsQuery.data?.pages.flatMap((page) => page) ?? []
-        }
+        products={productsQuery.data?.pages.flatMap((page) => page) ?? []}
         loadNextPage={fetchNextPage}
+      />
+      <FAB
+        iconName="add"
+        onPress={() => router.push("/(products-app)/product/new")}
       />
     </View>
   );
