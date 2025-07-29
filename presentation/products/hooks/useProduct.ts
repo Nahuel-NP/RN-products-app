@@ -2,10 +2,13 @@ import { createUpdateProduct } from "@/core/products/actions/create-update-produ
 import { getProductById } from "@/core/products/actions/getProductById";
 import { Product } from "@/core/products/interface/product.interface";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useRef } from "react";
 import { Alert } from "react-native";
 
 export const useProduct = (productId: string) => {
   const queryClient = useQueryClient();
+
+  const productIdRef = useRef(productId); // new, uuid
   const productQuery = useQuery({
     queryKey: ["product", productId],
     queryFn: () => getProductById(productId),
@@ -14,8 +17,13 @@ export const useProduct = (productId: string) => {
 
   // mutation
   const productMutation = useMutation({
-    mutationFn: async (data: Product) => createUpdateProduct(data),
+    mutationFn: async (data: Product) =>
+      createUpdateProduct({
+        ...data,
+        id: productIdRef.current,
+      }),
     onSuccess(data: Product) {
+      productIdRef.current = data.id;
       queryClient.invalidateQueries({
         queryKey: ["product", data.id],
       });
