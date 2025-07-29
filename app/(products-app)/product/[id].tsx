@@ -1,6 +1,7 @@
 import ProductImages from "@/presentation/products/components/ProductImages";
 import { useProduct } from "@/presentation/products/hooks/useProduct";
 import CustomKeyboardAvoidingView from "@/presentation/shared/CustomKeyboardAvoidVIew";
+import ThemedButton from "@/presentation/theme/components/ThemedButton";
 import ThemedButtonGroup from "@/presentation/theme/components/ThemedButtonGroup";
 import { ThemedText } from "@/presentation/theme/components/ThemedText";
 import ThemedTextInput from "@/presentation/theme/components/ThemedTextInput";
@@ -110,6 +111,22 @@ const ProductScreen = () => {
               console.log(option);
             }}
           />
+        </ThemedView>
+        <ThemedView
+          style={{
+            paddingHorizontal: 20,
+            marginTop: 20,
+            paddingBottom: 50,
+          }}
+        >
+          <ThemedButton
+            onPress={() => {
+              console.log("Guardar");
+            }}
+            postPendIcon="save-outline"
+          >
+            Guardar
+          </ThemedButton>
         </ThemedView>
       </ScrollView>
     </CustomKeyboardAvoidingView>
