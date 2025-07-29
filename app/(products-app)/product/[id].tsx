@@ -1,6 +1,7 @@
 import ProductImages from "@/presentation/products/components/ProductImages";
 import { useProduct } from "@/presentation/products/hooks/useProduct";
 import CustomKeyboardAvoidingView from "@/presentation/shared/CustomKeyboardAvoidVIew";
+import ThemedButtonGroup from "@/presentation/theme/components/ThemedButtonGroup";
 import { ThemedText } from "@/presentation/theme/components/ThemedText";
 import ThemedTextInput from "@/presentation/theme/components/ThemedTextInput";
 import { ThemedView } from "@/presentation/theme/components/ThemedView";
@@ -84,6 +85,30 @@ const ProductScreen = () => {
             placeholder="Stock"
             keyboardType="numeric"
             style={{ flex: 1 }}
+          />
+        </ThemedView>
+        <ThemedView
+          style={{
+            paddingHorizontal: 20,
+            marginVertical: 20,
+            gap: 20,
+            flexDirection: "column",
+          }}
+        >
+          <ThemedButtonGroup
+            options={["XS", "S", "M", "L", "XL", "XXL", "XXXL"]}
+            selectedOption={productQuery.data.sizes}
+            onSelectedOptionChange={(option) => {
+              console.log(option);
+            }}
+          />
+
+          <ThemedButtonGroup
+            options={["kid", "men", "women", "unisex"]}
+            selectedOption={[productQuery.data.gender]}
+            onSelectedOptionChange={(option) => {
+              console.log(option);
+            }}
           />
         </ThemedView>
       </ScrollView>
