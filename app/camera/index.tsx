@@ -1,6 +1,8 @@
 import { ThemedText } from "@/presentation/theme/components/ThemedText";
 import { useThemeColor } from "@/presentation/theme/hooks/useThemeColor";
+import { Ionicons } from "@expo/vector-icons";
 import { CameraType, CameraView, useCameraPermissions } from "expo-camera";
+import { router } from "expo-router";
 import { useRef, useState } from "react";
 import {
     StyleSheet,
@@ -60,6 +62,10 @@ export default function CameraScreen() {
     setFacing((current) => (current === "back" ? "front" : "back"));
   }
 
+  function onReturnCancelButtonPress() {
+    //todo: clear state
+    router.back();
+  }
   return (
     <View style={styles.container}>
       <CameraView ref={cameraRef} style={styles.camera} facing={facing} />
@@ -68,6 +74,9 @@ export default function CameraScreen() {
           </TouchableOpacity> */}
 
       <ShutterButton onPress={onShutterButtonPress} />
+      <FlipCameraButton onPress={toggleCameraFacing} />
+      <BackCancelButton onPress={onReturnCancelButtonPress} />
+      <GalleryButton onPress={() => {}} />
     </View>
   );
 }
@@ -89,6 +98,30 @@ const ShutterButton = ({ onPress }: { onPress: () => void }) => {
         },
       ]}
     ></TouchableOpacity>
+  );
+};
+
+const BackCancelButton = ({ onPress }: { onPress: () => void }) => {
+  return (
+    <TouchableOpacity style={styles.returnCancelButton} onPress={onPress}>
+      <Ionicons name="arrow-back-outline" size={24} color="white" />
+    </TouchableOpacity>
+  );
+};
+
+const FlipCameraButton = ({ onPress }: { onPress: () => void }) => {
+  return (
+    <TouchableOpacity onPress={onPress} style={styles.flipCameraButton}>
+      <Ionicons name="camera-reverse-outline" size={24} color="white" />
+    </TouchableOpacity>
+  );
+};
+
+const GalleryButton = ({ onPress }: { onPress: () => void }) => {
+  return (
+    <TouchableOpacity onPress={onPress} style={styles.galleryButton}>
+      <Ionicons name="images-outline" size={24} color="white" />
+    </TouchableOpacity>
   );
 };
 const styles = StyleSheet.create({
