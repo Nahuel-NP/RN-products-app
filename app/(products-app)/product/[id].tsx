@@ -17,7 +17,7 @@ const ProductScreen = () => {
 
   const { id } = useLocalSearchParams();
 
-  const { productQuery } = useProduct(id as string);
+  const { productQuery, productMutation } = useProduct(id as string);
   useEffect(() => {
     navigation.setOptions({
       headerRight: () => (
@@ -59,7 +59,7 @@ const ProductScreen = () => {
     <Formik
       initialValues={productQuery.data}
       onSubmit={(productLike) => {
-        console.log(productLike);
+        productMutation.mutate(productLike);
       }}
     >
       {({ values, handleSubmit, handleChange, setFieldValue }) => (
@@ -155,7 +155,7 @@ const ProductScreen = () => {
             >
               <ThemedButton
                 onPress={() => {
-                  console.log("Guardar");
+                  handleSubmit();
                 }}
                 postPendIcon="save-outline"
               >
