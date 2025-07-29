@@ -8,6 +8,7 @@ import ThemedTextInput from "@/presentation/theme/components/ThemedTextInput";
 import { ThemedView } from "@/presentation/theme/components/ThemedView";
 import { Ionicons } from "@expo/vector-icons";
 import { Redirect, useLocalSearchParams, useNavigation } from "expo-router";
+import { Formik } from "formik";
 import React, { useEffect } from "react";
 import { ActivityIndicator, ScrollView, View } from "react-native";
 
@@ -55,81 +56,116 @@ const ProductScreen = () => {
   }
 
   return (
-    <CustomKeyboardAvoidingView>
-      <ScrollView>
-        <ProductImages images={productQuery.data.images} />
-        <ThemedView
-          style={{ paddingHorizontal: 20, flexDirection: "column", gap: 10 }}
-        >
-          <ThemedTextInput placeholder="Titulo" />
-          <ThemedTextInput placeholder="Slug" />
-          <ThemedTextInput
-            placeholder="Description"
-            multiline
-            numberOfLines={4}
-          />
-        </ThemedView>
-        <ThemedView
-          style={{
-            paddingHorizontal: 20,
-            flexDirection: "row",
-            gap: 10,
-            marginTop: 20,
-          }}
-        >
-          <ThemedTextInput
-            placeholder="Precio"
-            keyboardType="numeric"
-            style={{ flex: 1 }}
-          />
-          <ThemedTextInput
-            placeholder="Stock"
-            keyboardType="numeric"
-            style={{ flex: 1 }}
-          />
-        </ThemedView>
-        <ThemedView
-          style={{
-            paddingHorizontal: 20,
-            marginVertical: 20,
-            gap: 20,
-            flexDirection: "column",
-          }}
-        >
-          <ThemedButtonGroup
-            options={["XS", "S", "M", "L", "XL", "XXL", "XXXL"]}
-            selectedOption={productQuery.data.sizes}
-            onSelectedOptionChange={(option) => {
-              console.log(option);
-            }}
-          />
+    <Formik
+      initialValues={productQuery.data}
+      onSubmit={(productLike) => {
+        console.log(productLike);
+      }}
+    >
+      {({ values, handleSubmit, handleChange, setFieldValue }) => (
+        <CustomKeyboardAvoidingView>
+          <ScrollView>
+            <ProductImages images={values.images} />
+            <ThemedView
+              style={{
+                paddingHorizontal: 20,
+                flexDirection: "column",
+                gap: 10,
+              }}
+            >
+              <ThemedTextInput
+                placeholder="Titulo"
+                value={values.title}
+                onChangeText={handleChange("title")}
+              />
+              <ThemedTextInput
+                placeholder="Slug"
+                value={values.slug}
+                onChangeText={handleChange("slug")}
+              />
+              <ThemedTextInput
+                placeholder="Description"
+                multiline
+                numberOfLines={4}
+                value={values.description}
+                onChangeText={handleChange("description")}
+              />
+            </ThemedView>
+            <ThemedView
+              style={{
+                paddingHorizontal: 20,
+                flexDirection: "row",
+                gap: 10,
+                marginTop: 20,
+              }}
+            >
+              <ThemedTextInput
+                placeholder="Precio"
+                keyboardType="numeric"
+                value={values.price.toString()}
+                onChangeText={handleChange("price")}
+                style={{ flex: 1 }}
+              />
+              <ThemedTextInput
+                placeholder="Stock"
+                keyboardType="numeric"
+                value={values.stock.toString()}
+                onChangeText={handleChange("stock")}
+                style={{ flex: 1 }}
+              />
+            </ThemedView>
+            <ThemedView
+              style={{
+                paddingHorizontal: 20,
+                marginVertical: 20,
+                gap: 20,
+                flexDirection: "column",
+              }}
+            >
+              <ThemedButtonGroup
+                options={["XS", "S", "M", "L", "XL", "XXL", "XXXL"]}
+                selectedOption={values.sizes}
+                onSelectedOptionChange={(selectedSize) => {
+                  const isSelected = values.sizes.includes(selectedSize);
+                  if (isSelected) {
+                    setFieldValue(
+                      "sizes",
+                      values.sizes.filter((size) => size !== selectedSize)
+                    );
+                  } else {
+                    setFieldValue("sizes", [...values.sizes, selectedSize]);
+                  }
+                }}
+              />
 
-          <ThemedButtonGroup
-            options={["kid", "men", "women", "unisex"]}
-            selectedOption={[productQuery.data.gender]}
-            onSelectedOptionChange={(option) => {
-              console.log(option);
-            }}
-          />
-        </ThemedView>
-        <ThemedView
-          style={{
-            paddingHorizontal: 20,
-            marginTop: 20,
-            paddingBottom: 50,
-          }}
-        >
-          <ThemedButton
-            onPress={() => {
-              console.log("Guardar");
-            }}
-            postPendIcon="save-outline"
-          >
-            Guardar
-          </ThemedButton>
-        </ThemedView>
-      </ScrollView>
-    </CustomKeyboardAvoidingView>
+              <ThemedButtonGroup
+                options={["kid", "men", "women", "unisex"]}
+                selectedOption={[values.gender]}
+                onSelectedOptionChange={(selectedGender) =>
+                  setFieldValue("gender", selectedGender)
+                }
+              />
+            </ThemedView>
+            <ThemedView
+              style={{
+                paddingHorizontal: 20,
+                marginTop: 20,
+                paddingBottom: 50,
+              }}
+            >
+              <ThemedButton
+                onPress={() => {
+                  console.log("Guardar");
+                }}
+                postPendIcon="save-outline"
+              >
+                Guardar
+              </ThemedButton>
+            </ThemedView>
+          </ScrollView>
+        </CustomKeyboardAvoidingView>
+      )}
+    </Formik>
   );
 };
 
