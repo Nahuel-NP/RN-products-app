@@ -29,7 +29,8 @@ async function updateProduct(productLike: Partial<Product>) {
   }
 }
 async function createProduct(productLike: Partial<Product>) {
-  const { images = [], user, ...rest } = productLike;
+  const { id, images = [], user, ...rest } = productLike;
+
   try {
     const { data } = await productsApi.post<Product>(`/products`, {
       ...rest,
