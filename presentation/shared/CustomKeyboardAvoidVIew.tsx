@@ -21,6 +21,7 @@ const CustomKeyboardAvoidingView = ({ children }: PropsWithChildren) => {
     <KeyboardAvoidingView
       enabled={keyboardVisible}
       style={{ flex: 1 }}
+      keyboardVerticalOffset={40}
       behavior={Platform.OS === "ios" ? "padding" : "height"}
     >
       {children}
