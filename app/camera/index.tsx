@@ -5,16 +5,18 @@ import { CameraType, CameraView, useCameraPermissions } from "expo-camera";
 import { router } from "expo-router";
 import { useRef, useState } from "react";
 import {
-    StyleSheet,
-    Text,
-    TouchableOpacity,
-    useWindowDimensions,
-    View,
+  Image,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  useWindowDimensions,
+  View,
 } from "react-native";
 
 export default function CameraScreen() {
   const [facing, setFacing] = useState<CameraType>("back");
   const [permission, requestPermission] = useCameraPermissions();
+  const [selectedImage, setSelectedImage] = useState<string>();
 
   const cameraRef = useRef<CameraView>(null);
   if (!permission) {
@@ -55,6 +57,8 @@ export default function CameraScreen() {
     if (!photo.uri) {
       return;
     }
+
+    setSelectedImage(photo.uri);
     //TODO: save image
   };
 
@@ -62,17 +66,27 @@ export default function CameraScreen() {
     setFacing((current) => (current === "back" ? "front" : "back"));
   }
 
+  function onPictureAccepted() {
+    console.log("Todo");
+  }
   function onReturnCancelButtonPress() {
     //todo: clear state
     router.back();
   }
+
+  if (selectedImage) {
+    return (
+      <View style={styles.container}>
+        <Image source={{ uri: selectedImage }} style={styles.camera} />
+        <ConfirmImageButton onPress={onPictureAccepted} />
+        <RetakeImageButton onPress={() => setSelectedImage(undefined)} />
+        <BackCancelButton onPress={onReturnCancelButtonPress} />
+      </View>
+    );
+  }
   return (
     <View style={styles.container}>
       <CameraView ref={cameraRef} style={styles.camera} facing={facing} />
-      {/* <TouchableOpacity style={styles.button} onPress={toggleCameraFacing}>
-            <Text style={styles.text}>Flip Camera</Text>
-          </TouchableOpacity> */}
-
       <ShutterButton onPress={onShutterButtonPress} />
       <FlipCameraButton onPress={toggleCameraFacing} />
       <BackCancelButton onPress={onReturnCancelButtonPress} />
@@ -98,6 +112,34 @@ const ShutterButton = ({ onPress }: { onPress: () => void }) => {
         },
       ]}
     ></TouchableOpacity>
+  );
+};
+const ConfirmImageButton = ({ onPress }: { onPress: () => void }) => {
+  const dimensions = useWindowDimensions();
+  const primaryColor = useThemeColor({}, "primary");
+  return (
+    <TouchableOpacity
+      onPress={onPress}
+      style={[
+        styles.shutterButton,
+        {
+          position: "absolute",
+          bottom: 40,
+          left: dimensions.width / 2 - 32,
+          borderColor: primaryColor,
+        },
+      ]}
+    >
+      <Ionicons name="checkmark-outline" size={24} color={primaryColor} />
+    </TouchableOpacity>
+  );
+};
+
+const RetakeImageButton = ({ onPress }: { onPress: () => void }) => {
+  return (
+    <TouchableOpacity onPress={onPress} style={styles.flipCameraButton}>
+      <Ionicons name="close-outline" size={24} color="white" />
+    </TouchableOpacity>
   );
 };
 
