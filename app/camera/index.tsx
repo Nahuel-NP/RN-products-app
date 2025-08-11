@@ -95,12 +95,16 @@ export default function CameraScreen() {
       aspect: [4, 3],
       // allowsEditing: true,
       selectionLimit: 5,
-      allowsMultipleSelection:true,
+      allowsMultipleSelection: true,
     });
     if (result.canceled) {
       return;
     }
-    setSelectedImage(result.assets[0].uri);
+
+    result.assets.forEach((asset) => {
+      addSelectedImage(asset.uri);
+    });
+    router.dismiss();
   };
   function toggleCameraFacing() {
     setFacing((current) => (current === "back" ? "front" : "back"));
