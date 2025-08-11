@@ -1,14 +1,14 @@
 import { create } from "zustand";
 
 interface TemporalCameraStoreState {
-  selectedImage: string[];
+  selectedImages: string[];
   addSelectedImage: (image: string) => void;
   clearImages: () => void;
 }
 
 export const useCameraStore = create<TemporalCameraStoreState>()((set) => ({
-  selectedImage: [],
+  selectedImages: [],
   addSelectedImage: (image: string) =>
-    set((state) => ({ selectedImage: [...state.selectedImage, image] })),
-  clearImages: () => set({ selectedImage: [] }),
+    set((state) => ({ selectedImages: [...state.selectedImages, image] })),
+  clearImages: () => set({ selectedImages: [] }),
 }));
