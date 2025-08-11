@@ -45,6 +45,7 @@ const uploadImage = async (image: string): Promise<string> => {
       },
     }
   );
+  console.log("🚀 ~ uploadImage ~ data:", data)
   return data.image;
 };
 
@@ -53,6 +54,7 @@ async function updateProduct(productLike: Partial<Product>) {
   const { id, images = [], user, ...rest } = productLike;
   try {
     const checkedImages = await prepareImages(images);
+    console.log("🚀 ~ updateProduct ~ checkedImages:", checkedImages)
     const { data } = await productsApi.patch<Product>(`/products/${id}`, {
       ...rest,
       images: checkedImages,

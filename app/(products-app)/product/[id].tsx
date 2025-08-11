@@ -16,7 +16,12 @@ import {
 } from "expo-router";
 import { Formik } from "formik";
 import React, { useEffect } from "react";
-import { ActivityIndicator, ScrollView, View } from "react-native";
+import {
+  ActivityIndicator,
+  RefreshControl,
+  ScrollView,
+  View,
+} from "react-native";
 
 const ProductScreen = () => {
   const { selectedImages, clearImages } = useCameraStore();
@@ -85,8 +90,17 @@ const ProductScreen = () => {
     >
       {({ values, handleSubmit, handleChange, setFieldValue }) => (
         <CustomKeyboardAvoidingView>
-          <ScrollView>
-            <ProductImages images={[  ...values.images, ...selectedImages]} />
+          <ScrollView
+            refreshControl={
+              <RefreshControl
+                refreshing={productQuery.isFetching}
+                onRefresh={async () => {
+                  await productQuery.refetch();
+                }}
+              />
+            }
+          >
+            <ProductImages images={[...values.images, ...selectedImages]} />
             <ThemedView
               style={{
                 paddingHorizontal: 20,
