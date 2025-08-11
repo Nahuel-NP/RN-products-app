@@ -1,3 +1,4 @@
+import { useCameraStore } from "@/presentation/store/useCameraStore";
 import { ThemedText } from "@/presentation/theme/components/ThemedText";
 import { useThemeColor } from "@/presentation/theme/hooks/useThemeColor";
 import { Ionicons } from "@expo/vector-icons";
@@ -16,6 +17,7 @@ import {
 } from "react-native";
 
 export default function CameraScreen() {
+  const { addSelectedImage, clearImages } = useCameraStore();
   const [facing, setFacing] = useState<CameraType>("back");
   const [cameraPermission, requestCameraPermission] = useCameraPermissions();
   const [mediaPermission, requestMediaPermission] =
@@ -94,7 +96,10 @@ export default function CameraScreen() {
       return;
     }
     await MediaLibrary.createAssetAsync(selectedImage!);
+    addSelectedImage(selectedImage);
+    router.dismiss();
   }
+  
   function onReturnCancelButtonPress() {
     //todo: clear state
     router.back();

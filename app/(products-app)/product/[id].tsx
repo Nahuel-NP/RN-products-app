@@ -1,6 +1,7 @@
 import ProductImages from "@/presentation/products/components/ProductImages";
 import { useProduct } from "@/presentation/products/hooks/useProduct";
 import CustomKeyboardAvoidingView from "@/presentation/shared/CustomKeyboardAvoidVIew";
+import { useCameraStore } from "@/presentation/store/useCameraStore";
 import MenuIconButton from "@/presentation/theme/components/MenuIconButton";
 import ThemedButton from "@/presentation/theme/components/ThemedButton";
 import ThemedButtonGroup from "@/presentation/theme/components/ThemedButtonGroup";
@@ -18,11 +19,20 @@ import React, { useEffect } from "react";
 import { ActivityIndicator, ScrollView, View } from "react-native";
 
 const ProductScreen = () => {
+  const { selectedImages, clearImages } = useCameraStore();
+
   const navigation = useNavigation();
 
   const { id } = useLocalSearchParams();
 
   const { productQuery, productMutation } = useProduct(id as string);
+
+  useEffect(() => {
+    return () => {
+      clearImages();
+    };
+  }, []);
+
   useEffect(() => {
     navigation.setOptions({
       headerRight: () => (
@@ -73,7 +83,7 @@ const ProductScreen = () => {
       {({ values, handleSubmit, handleChange, setFieldValue }) => (
         <CustomKeyboardAvoidingView>
           <ScrollView>
-            <ProductImages images={values.images} />
+            <ProductImages images={[  ...values.images, ...selectedImages]} />
             <ThemedView
               style={{
                 paddingHorizontal: 20,
