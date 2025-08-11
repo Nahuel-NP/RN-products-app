@@ -2,9 +2,11 @@ import { ThemedText } from "@/presentation/theme/components/ThemedText";
 import { useThemeColor } from "@/presentation/theme/hooks/useThemeColor";
 import { Ionicons } from "@expo/vector-icons";
 import { CameraType, CameraView, useCameraPermissions } from "expo-camera";
+import * as MediaLibrary from "expo-media-library";
 import { router } from "expo-router";
 import { useRef, useState } from "react";
 import {
+  Alert,
   Image,
   StyleSheet,
   Text,
@@ -15,16 +17,37 @@ import {
 
 export default function CameraScreen() {
   const [facing, setFacing] = useState<CameraType>("back");
-  const [permission, requestPermission] = useCameraPermissions();
+  const [cameraPermission, requestCameraPermission] = useCameraPermissions();
+  const [mediaPermission, requestMediaPermission] =
+    MediaLibrary.usePermissions();
   const [selectedImage, setSelectedImage] = useState<string>();
 
   const cameraRef = useRef<CameraView>(null);
-  if (!permission) {
+
+  const onRequestPermissions = async () => {
+    try {
+      const { status: cameraStatus } = await requestCameraPermission();
+      if (cameraStatus !== "granted") {
+        Alert.alert("Error", "No se concedió permiso para la cámara");
+        return;
+      }
+      const { status: mediaStatus } = await requestMediaPermission();
+      if (mediaStatus !== "granted") {
+        Alert.alert("Error", "No se concedió permiso para la galería");
+        return;
+      }
+    } catch (error) {
+      console.log(error);
+      Alert.alert("Error", "No se pudieron obtener los permisos");
+    }
+  };
+
+  if (!cameraPermission) {
     // Camera permissions are still loading.
     return <View />;
   }
 
-  if (!permission.granted) {
+  if (!cameraPermission.granted) {
     // Camera permissions are not granted yet.
     return (
       <View
@@ -40,7 +63,7 @@ export default function CameraScreen() {
         <Text style={styles.message}>
           Se necesitan permisos para acceder a la cámara y galería
         </Text>
-        <TouchableOpacity onPress={requestPermission}>
+        <TouchableOpacity onPress={onRequestPermissions}>
           <ThemedText>Activar</ThemedText>
         </TouchableOpacity>
       </View>
@@ -66,8 +89,11 @@ export default function CameraScreen() {
     setFacing((current) => (current === "back" ? "front" : "back"));
   }
 
-  function onPictureAccepted() {
-    console.log("Todo");
+  async function onPictureAccepted() {
+    if (!selectedImage) {
+      return;
+    }
+    await MediaLibrary.createAssetAsync(selectedImage!);
   }
   function onReturnCancelButtonPress() {
     //todo: clear state
